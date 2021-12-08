@@ -16,13 +16,13 @@ segments = [
 ]
 
 default_segment_mapping = {
-    0: set("x"),
-    1: set("x"),
-    2: set("x"),
-    3: set("x"),
-    4: set("x"),
-    5: set("x"),
-    6: set("x"),
+    0: set("#"),
+    1: set("#"),
+    2: set("#"),
+    3: set("#"),
+    4: set("#"),
+    5: set("#"),
+    6: set("#"),
 }
 segment_format = """
  aaaa
@@ -31,7 +31,7 @@ b    c
  dddd
 e    f
 e    f
- gggg 
+ gggg
     """
 segment_format = segment_format.replace("a", "{a}")
 segment_format = segment_format.replace("b", "{b}")
@@ -43,9 +43,35 @@ segment_format = segment_format.replace("g", "{g}")
 
 
 def print_segment_display(segments_on_off, segment_mapping=None):
+    print(get_segment_display_str(segments_on_off, segment_mapping))
+
+
+def get_segment_display_str(segments_on_off, segment_mapping=None):
     if segment_mapping is None:
         segment_mapping = default_segment_mapping
-    print(segment_format.format(**dict(zip("abcdefg", [segment_mapping[i].copy().pop() if x else "." for i, x in enumerate(segments_on_off)]))))
+    return segment_format.format(
+        **dict(zip("abcdefg", [segment_mapping[i].copy().pop() if x else "." for i, x in enumerate(segments_on_off)])))
+
+
+def join_by_line(strs):
+    per_line = [string.split("\n") for string in strs]
+    max_lines = max(len(lines) for lines in per_line)
+    max_line_length = max(len(line) for lines in per_line for line in lines)
+
+    return "\n".join(
+        " ".join(
+            per_line[j][i].ljust(max_line_length, " ")
+            for j in range(len(strs))
+        )
+        for i in range(max_lines)
+    )
+
+
+def print_segment_displays(n, segment_mapping=None):
+    print(join_by_line([
+        get_segment_display_str(segments[int(i)], segment_mapping)
+        for i in str(n)
+    ]).replace("x", "#"))
 
 
 def find_map(inp: List[set]):
@@ -131,6 +157,8 @@ for line in f.readlines():
         for x in out
     )
     total += int(out_str)
+    print_segment_displays(out_str, segment_map)
 
-print(total)
+# print(total)
+print_segment_displays(total)
 f.close()
