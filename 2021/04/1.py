@@ -27,9 +27,8 @@ def print_board(b):
     ]))
 
 def check_board(b):
-
     return any(
-        all(v for _,v in b[i]) or all(b[j][i][1] for j in range(5))
+        all(v for _, v in b[i]) or all(b[j][i][1] for j in range(5))
         for i in range(5)
     )
 

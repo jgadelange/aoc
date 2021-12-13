@@ -1,6 +1,6 @@
 from typing import List
 
-f = open('./input', 'r')
+f = open('./example', 'r')
 
 segments = [
     (1, 1, 1, 0, 1, 1, 1),
