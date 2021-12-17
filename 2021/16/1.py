@@ -1,80 +1,114 @@
+from functools import reduce
+
 f = open('./input', 'r')
 
 total_v = 0
+
+
+def generate_bin(line):
+    for c in line:
+        yield c
+
+
 def generator(line):
     for c in line:
         for d in str(bin(int(c, base=16)))[2:].zfill(4):
             yield d
 
 
-inp = "110100101111111000101000"
+def gt(g):
+    return int(next(g) > next(g))
 
 
-def alt_gen(line):
-    for c in line:
-        yield c
+def lt(g):
+    return int(next(g) < next(g))
 
 
-g1 = generator(f.readline().strip())
-# g1 = generator("EE00D40C823060")
-# g1 = generator("A0016C880162017C3686B18A3D4780")
-# g1 = alt_gen(inp)
+def eq(g):
+    return int(next(g) == next(g))
 
 
-def take(gen, n):
-    return (x for _, x in zip(range(n), gen))
-
-
-def take_str(gen, n):
-    return "".join(take(gen,n))
-
-
-def take_to_int(gen, n):
-    return int(take_str(gen, n), base=2)
+def product(g):
+    return reduce(lambda acc, val: acc * val, g, 1)
 
 
 class Parser:
-    def __init__(self):
+    operator_map = {
+        0: sum,
+        1: product,
+        2: min,
+        3: max,
+        5: gt,
+        6: lt,
+        7: eq,
+    }
+
+    def __init__(self, gen_or_line):
+        if isinstance(gen_or_line, str):
+            self.g = generator(gen_or_line)
+        else:
+            self.g = gen_or_line
         self.total_v = 0
 
-    def parse(self, g):
-        v = take_to_int(g, 3)
+    def take(self, n):
+        return (x for _, x in zip(range(n), self.g))
+
+    def take_str(self, n):
+        return "".join(self.take(n))
+
+    def take_to_int(self, n):
+        return int(self.take_str(n), base=2)
+
+    def parse(self):
+        v = self.take_to_int(3)
         self.total_v += v
 
-        print("v", v)
-
-        t = take_to_int(g, 3)
-        print("t", t)
+        t = self.take_to_int(3)
 
         if t == 4:
-            res = ""
-            while True:
-                leading = take_str(g, 1)
-                res += take_str(g, 4)
-                if leading == "0":
-                    break
-
-            return int(res, base=2)
+            return self.parse_literal()
         else:
-            length_type = take_str(g, 1)
-            print("I", length_type)
-            if length_type == "0":
-                l = take_to_int(g, 15)
-                print("L", l)
-                sub_gen = alt_gen(take_str(g, l))
-                try:
-                    while True:
-                        print(self.parse(sub_gen))
-                except:
-                    pass
-            else:
-                sub_packets = take_to_int(g, 11)
-                for i in range(sub_packets):
-                    print(self.parse(g))
+            return self.calculate_operator(t)
+
+    def calculate_operator(self, t):
+        length_type = next(self.take(1))
+        op = self.operator_map[t]
+        if length_type == "0":
+            return op(self.parse_total_length())
+        else:
+            return op(self.parse_num_packets())
+
+    def parse_literal(self):
+        res = ""
+        while True:
+            leading = next(self.take(1))
+            res += self.take_str(4)
+            if leading == "0":
+                break
+        return int(res, base=2)
+
+    def parse_total_length(self):
+        length = self.take_to_int(15)
+        sub_parser = Parser(generate_bin(self.take_str(length)))
+        try:
+            while True:
+                yield sub_parser.parse()
+        except:
+            pass
+        self.total_v += sub_parser.total_v
+
+    def parse_num_packets(self):
+        sub_packets = self.take_to_int(11)
+        for i in range(sub_packets):
+            yield self.parse()
 
 
-parser = Parser()
-print(parser.parse(g1))
-print(parser.total_v)
+inp = f.readline().strip()
+# inp = "9C0141080250320F1802104A08"
+
+parser = Parser(inp)
+result = parser.parse()
+print("Part 1", parser.total_v)
+print("Part 2", result)
 
 f.close()
