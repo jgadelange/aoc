@@ -11,6 +11,13 @@ class Point:
             self.z+other.z
         )
 
+    def __sub__(self, other):
+        return Point(
+            self.x-other.x,
+            self.y-other.y,
+            self.z-other.z,
+        )
+
     def __mul__(self, other):
         return Point(
             self.x*other.x,
@@ -29,6 +36,9 @@ class Point:
 
     def __eq__(self, other):
         return self.as_tuple() == other.as_tuple()
+
+    def __int__(self):
+        return abs(self.x) + abs(self.y) + abs(self.z)
 
     def as_tuple(self):
         return self.x, self.y, self.z
