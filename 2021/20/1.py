@@ -1,4 +1,10 @@
+import operator
+import time
+from functools import reduce
+
 f = open('./input', 'r')
+
+starttime = time.time()
 
 adj = [
     (-1, -1),
@@ -85,5 +91,5 @@ for i in range(50):
 # print_grid(grid)
 print(sum(c for line in grid[extra:-extra] for c in line[extra:-extra]))
 
-
+print(f"Took {time.time()-starttime}s")
 f.close()
