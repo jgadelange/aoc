@@ -79,13 +79,13 @@ class Parser:
             return op(self.parse_num_packets())
 
     def parse_literal(self):
-        res = ""
+        res = 0
         while True:
             leading = next(self.take(1))
-            res += self.take_str(4)
+            res = (res << 4) + self.take_to_int(4)
             if leading == "0":
                 break
-        return int(res, base=2)
+        return res
 
     def parse_total_length(self):
         length = self.take_to_int(15)
@@ -104,7 +104,7 @@ class Parser:
 
 
 inp = f.readline().strip()
-# inp = "9C0141080250320F1802104A08"
+# inp = "D2FE28"
 
 parser = Parser(inp)
 result = parser.parse()
