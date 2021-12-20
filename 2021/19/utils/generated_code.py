@@ -57,3 +57,32 @@ def get_all_rotations_methods():
         lambda p: Point(p.x, -p.z, p.y),
         lambda p: Point(p.x, p.y, p.z),
     ]
+
+
+def get_all_rotations_methods_tuple():
+    return [
+        lambda x, y, z: (-x, y, -z),
+        lambda x, y, z: (x, z, -y),
+        lambda x, y, z: (z, -y, x),
+        lambda x, y, z: (y, -x, z),
+        lambda x, y, z: (z, -x, -y),
+        lambda x, y, z: (y, x, -z),
+        lambda x, y, z: (-z, x, -y),
+        lambda x, y, z: (x, -y, -z),
+        lambda x, y, z: (-z, -y, -x),
+        lambda x, y, z: (-y, -x, -z),
+        lambda x, y, z: (-y, z, -x),
+        lambda x, y, z: (-z, -x, y),
+        lambda x, y, z: (-z, y, x),
+        lambda x, y, z: (y, -z, -x),
+        lambda x, y, z: (-y, -z, x),
+        lambda x, y, z: (-x, -y, z),
+        lambda x, y, z: (-x, z, y),
+        lambda x, y, z: (-x, -z, -y),
+        lambda x, y, z: (-y, x, z),
+        lambda x, y, z: (y, z, x),
+        lambda x, y, z: (z, x, y),
+        lambda x, y, z: (z, y, -x),
+        lambda x, y, z: (x, -z, y),
+        lambda x, y, z: (x, y, z),
+    ]

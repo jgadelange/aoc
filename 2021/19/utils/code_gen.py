@@ -112,6 +112,28 @@ def print_get_all_rotation_methods(f):
     f.write("{0}]\n".format(indent))
 
 
+def print_get_all_rotation_methods_tuple(f):
+    mapping = {
+        2: "x",
+        -2: "-x",
+        4: "y",
+        -4: "-y",
+        6: "z",
+        -6: "-z"
+    }
+    f.write("def get_all_rotations_methods_tuple():\n")
+    indent = "    "
+    f.write("{0}return [\n".format(indent))
+    for p in rotateAll(Point(2,4,6)):
+        f.write("{0}{0}lambda x, y, z: ({x}, {y}, {z}),\n".format(
+            indent,
+            x=mapping[p.x],
+            y=mapping[p.y],
+            z=mapping[p.z],
+        ))
+    f.write("{0}]\n".format(indent))
+
+
 if __name__ == "__main__":
     # f = sys.stdout
     f = open(Path(os.path.dirname(__file__)) / "generated_code.py", "w")
@@ -120,4 +142,6 @@ if __name__ == "__main__":
     print_get_all_rotations_for(f)
     print_spacing(f)
     print_get_all_rotation_methods(f)
+    print_spacing(f)
+    print_get_all_rotation_methods_tuple(f)
     f.close()
