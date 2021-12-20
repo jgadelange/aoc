@@ -17,7 +17,17 @@ pairs = Counter([
     for i in range(len(start)-1)
 ])
 
-for _ in range(40):
+
+def solution(ps):
+    count = Counter()
+    for (a, b), c in ps.items():
+        count[a] += c
+        count[b] += c
+    cs = sorted(count.values())
+    return (cs[len(cs)-1] // 2 - cs[0] // 2) + 1
+
+
+for i in range(40):
     new_pairs = Counter()
     for (a, b), c in pairs.items():
         new_letter = mapping[(a,b)]
@@ -25,11 +35,8 @@ for _ in range(40):
         new_pairs[(new_letter, b)] += c
     pairs = new_pairs
 
-count = Counter()
-for (a, b), c in pairs.items():
-    count[a] += c
-    count[b] += c
-cs = sorted(count.values())
-# print(cs)
-print((cs[len(cs)-1] // 2 - cs[0] // 2) + 1)
+    if i == 9:
+        print(solution(pairs))
+
+print(solution(pairs))
 f.close()
