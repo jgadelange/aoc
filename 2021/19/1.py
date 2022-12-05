@@ -1,9 +1,11 @@
+import time
 from itertools import combinations
 
 from utils.generated_code import get_all_rotations_methods_tuple
 
 f = open('./input', 'r')
 
+starttime = time.time()
 rotation_methods = get_all_rotations_methods_tuple()
 
 
@@ -48,11 +50,11 @@ while scanners:
         scanner_locations.append((x,y,z))
     else:
         scanners.append(current)
-        print(":(", len(scanners))
+        # print(":(", len(scanners))
 
 
 print(len(beacons))
 print(max(abs(x-xx)+abs(y-yy)+abs(z-zz) for (x,y,z), (xx,yy,zz) in combinations(scanner_locations, 2)))
 
-
+print(f"Took {time.time()-starttime}s")
 f.close()
