@@ -97,7 +97,7 @@ def perform(c, d):
     if d == L:
         if 1 <= y <= 50:
             xx = 1
-            yy = 150 - ((x-1) % 50) # Check 50
+            yy = 150 - ((y-1) % 50) # Check 50
             d = R
             return yy, xx, d
         if 51 <= y <= 100:
@@ -107,7 +107,7 @@ def perform(c, d):
             return yy, xx, d
         if 101 <= y <= 150:
             xx = 51
-            yy = 50 - ((x-1) % 50) # check 50
+            yy = 50 - ((y-1) % 50) # check 50
             d = R
             return yy, xx, d
         if 151 <= y <= 200:
@@ -122,7 +122,7 @@ def perform(c, d):
     if d == R:
         if 1 <= y <= 50:
             xx = 100
-            yy = 150 - ((x-1) % 50)
+            yy = 150 - ((y-1) % 50)
             d = L
             return yy, xx, d
         if 51 <= y <= 100:
@@ -132,7 +132,7 @@ def perform(c, d):
             return yy, xx, d
         if 101 <= y <= 150:
             xx = 150
-            yy = 51 - (y - 100)
+            yy = 50 - ((y-1) % 50)
             d = L
             return yy, xx, d
         if 151 <= y <= 200:
