@@ -42,17 +42,17 @@ print("\n".join(name + f"({len(node['adjacent'])}): " + str(node) for name, node
 min_dist = min(d for n, x in nodes.items() for d in x["adjacent"].values() if n != "AA")
 print(min_dist)
 root = "AA"
-stack = [(["AA"], 26, ["AA"], 26, 0, sum(x["flow"] for x in nodes.values()))]
+stack = [(["AA"], 26, ["AA"], 26, 0, {n for n in nodes.keys()} - {"AA"}, sum(x["flow"] for x in nodes.values()))]
 tried = set()
 max_released = 0
 while len(stack):
-    path, time_left, path2, time_left2, released, flow_left = stack.pop()
+    path, time_left, path2, time_left2, released, nodes_left, flow_left = stack.pop()
     if released + (max(time_left, time_left2)-1-min_dist) * flow_left < max_released:
         continue
+
     # print(path, released, time_left)
-    for adj, d in nodes[path[-1]]["adjacent"].items():
-        if adj not in nodes or adj in path or adj in path2:
-            continue
+    for adj in nodes_left:
+        d = nodes[path[-1]]["adjacent"][adj]
         if (new_time_left := time_left - d - 1) <= 0:
             continue
         new_path = path + [adj]
@@ -67,10 +67,9 @@ while len(stack):
             print(new_path, path2, new_time_left, time_left)
             print(new_released)
         tried.add(tup)
-        stack.append((new_path, new_time_left, path2, time_left2, new_released, flow_left-nodes[adj]["flow"]))
-    for adj, d in nodes[path2[-1]]["adjacent"].items():
-        if adj not in nodes or adj in path or adj in path2:
-            continue
+        stack.append((new_path, new_time_left, path2, time_left2, new_released, nodes_left-{adj}, flow_left-nodes[adj]["flow"]))
+    for adj in nodes_left:
+        d = nodes[path2[-1]]["adjacent"][adj]
         if (new_time_left := time_left2 - d - 1) <= 0:
             continue
         new_path = path2 + [adj]
@@ -85,7 +84,7 @@ while len(stack):
             print(path, new_path, time_left, new_time_left)
             print(new_released)
         tried.add(tup)
-        stack.append((path, time_left, new_path, new_time_left, new_released, flow_left-nodes[adj]["flow"]))
+        stack.append((path, time_left, new_path, new_time_left, new_released, nodes_left-{adj}, flow_left-nodes[adj]["flow"]))
 
 if __name__ == "__main__":
     pass

@@ -50,7 +50,6 @@ while queue.qsize():
             distance[(yy, xx)] = d+1
             queue.put((d+1, (yy, xx)))
 
-print(distance)
 print(distance[end])
 
 

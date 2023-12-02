@@ -63,5 +63,5 @@ while True:
         y += 1
 
 print(len([x for x in positions.values() if x == SAND]))
-if __name__ == "__main__":
+    if __name__ == "__main__":
     pass

@@ -59,7 +59,7 @@ def move_rock(r, to):
 
 last_lines = {}
 maxys = {}
-nlines= 20
+nlines= 10
 rock = None
 for d, j in zip(cycle(jets), range(NROCKS)):
     if rock is None:

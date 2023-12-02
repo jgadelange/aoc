@@ -1,4 +1,4 @@
-f = open('./example', 'r')
+f = open('./input', 'r')
 
 pairs = [
     [eval(line) for line in block.split("\n") if line]

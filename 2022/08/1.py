@@ -1,4 +1,4 @@
-f = open('./input', 'r')
+f = open('./example', 'r')
 
 
 hm = [

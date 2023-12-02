@@ -1,4 +1,4 @@
-f = open('./input', 'r')
+f = open('./example2', 'r')
 
 
 def print_rope(rope):
@@ -58,6 +58,7 @@ for l in [2, 10]:
                 rope[i+1] = (newx, newy)
 
             visited_by_tail[rope[-1]] = True
+            if len(rope) == 10: print_rope(rope)
     print(len(visited_by_tail))
 
 if __name__ == "__main__":
