@@ -16,22 +16,25 @@ mappers = [
     ]
     for group in groups
 ]
-
-def gen_seeds():
-    for a, b in zip(seeds[:-1:2], seeds[1::2]):
-        yield from range(a, a+b)
+l = len(seeds)//2
+t = sum(seeds[1::2])
+print(t)
 
 min = sys.maxsize
-for seed in gen_seeds():
-    c = seed
-    for ms in mappers:
-        for dst_start, src_start, size in ms:
-            src_end = src_start + size
-            if src_start <= c < src_end:
-                c = dst_start + c - src_start
-                break
-    if c < min:
-        min = c
+d = 0
+for (b, a) in sorted(zip(seeds[1::2], seeds[:-1:2])):
+    print(f"{d/t*100:.2f}% - {time.time()-start:.4}s")
+    for seed in range(a, a+b):
+        c = seed
+        for ms in mappers:
+            for dst_start, src_start, size in ms:
+                src_end = src_start + size
+                if src_start <= c < src_end:
+                    c = dst_start + c - src_start
+                    break
+        if c < min:
+            min = c
+    d+=b
 
 print(min)
 print("time: ", time.time()-start)
