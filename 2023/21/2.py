@@ -1,5 +1,4 @@
-from collections import Counter
-
+# Took some inspiration from: https://github.com/jmerle/advent-of-code-2023/blob/13b424e9cebbfebf4f5c7629c36cab8dca50af37/src/day21/part2.py
 f = open('./input', 'r')
 
 grid = [line.strip() for line in f.readlines() if line.strip()]
@@ -59,6 +58,9 @@ for i in range(target):
             if not first_wdiff:
                 first_wdiff = i
             print(i, diff-diff2)
+
+            if (target-i) % w == 0:
+                break
 
 print(wdiff)
 
