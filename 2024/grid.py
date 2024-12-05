@@ -3,10 +3,15 @@ W = (-1, 0)
 S = (0, 1)
 E = (1, 0)
 
-NE = N+E
-SE = S+E
-SW = S+W
-NW = N+W
+
+def add_points(*points):
+    return tuple(map(sum, zip(*points)))
+
+
+NE = add_points(N, E)
+SE = add_points(S, E)
+SW = add_points(S, W)
+NW = add_points(N, W)
 
 ADJ_ORT = [N, E, S, W]
 ADJ_DIAG = [NE, SE, SW, NW]
@@ -16,6 +21,8 @@ UP = (0, -1)
 LEFT = (-1, 0)
 DOWN = (0, 1)
 RIGHT = (1, 0)
+
+ADJ_ORT_3D = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]
 
 
 def in_bounds(w, h, x, y):
