@@ -9,6 +9,7 @@ SW = S+W
 NW = N+W
 
 ADJ_ORT = [N, E, S, W]
+ADJ_DIAG = [NE, SE, SW, NW]
 ADJ = [N, NE, E, SE, S, SW, W, NW]
 
 UP = (0, -1)
