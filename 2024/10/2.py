@@ -31,9 +31,9 @@ starts = [
 def trace(x, y):
     c = grid[y][x]
     if c == 9:
-        return 1
+        return [(x,y)]
 
-    a = 0
+    a = []
     for dx, dy in ADJ_ORT:
         xx, yy = x + dx, y + dy
         if out_of_bounds(xx, yy):
@@ -42,13 +42,16 @@ def trace(x, y):
             a += trace(xx, yy)
     return a
 
-ans = 0
+
+a1, a2 = 0, 0
 for x, y in starts:
     a = trace(x, y)
-    ans += a
+    a1 += len(set(a))
+    a2 += len(a)
+    # ans += a
     # print(len(a))
 # print(sum(trace(x, y) for x, y in starts))
-print(ans)
+print(a1, a2)
 
 if __name__ == "__main__":
     pass
