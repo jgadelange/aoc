@@ -1,3 +1,5 @@
+import math
+
 f = open('./input', 'r')
 
 inp = []
@@ -9,6 +11,8 @@ for line in f.readlines():
 
 
 def concat(a, b):
+    l = int(math.log10(b)) + 1
+    return a * 10 ** l + b
     return int(str(a) + str(b))
 
 ans = 0
@@ -32,11 +36,11 @@ ans = 0
 for total, nums in inp:
     ts = {nums[0]}
     for num in nums[1:]:
-        nts = set()
+        nts = list()
         for t in ts:
             if t > total:
                 continue
-            nts |= {t * num, t + num, concat(t, num)}
+            nts.extend([t * num, t + num, concat(t, num)])
         ts = nts
 
     if total in ts:
