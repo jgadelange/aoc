@@ -45,10 +45,29 @@ robot = next((x*2,y) for y in range(h) for x in range(w) if g[y][x] == "@")
 moves = "".join(ds.split("\n"))
 x, y = robot
 
+charset1 = {
+    "#": "#",
+    "[": "[",
+    "]": "]",
+    "O": "O",
+    ".": ".",
+    "@": "@",
+}
+charset2 = {
+    "#": "🏢",
+    "[": "［",
+    "]": "］",
+    "O": "📦",
+    ".": "﹒",
+    "@": "🤖",
+}
+
+charset = charset2
+
 while True:
     print(
         "\n".join(
-            "".join("#" if (a,b) in ws else "[" if (a,b) in boxes else "]" if (a-1, b) in boxes else "@" if (a,b) == (x,y) else "." for a in range(w*2))
+            "".join(charset["#"] if (a,b) in ws else charset["["] if (a,b) in boxes else charset["]"] if (a-1, b) in boxes else charset["@"] if (a,b) == (x,y) else charset["."] for a in range(w*2))
             for b in range(h)
         )
     )
