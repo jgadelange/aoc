@@ -1,4 +1,7 @@
+import time
+t = time.time()
 import sys
+
 from queue import PriorityQueue
 
 f, w, h, s = open('./input', 'r'), 71, 71, 1024
@@ -14,6 +17,11 @@ ADJ_ORT = [N, E, S, W]
 def in_bounds(x, y):
     return 0 <= x < w and 0 <= y < h
 
+
+def manh(point, point2):
+    return abs(point[0] - point2[0]) + abs(point[1] - point2[1])
+
+
 ps = [
     tuple(map(int, line.split(",")))
     for line in f.readlines()
@@ -25,11 +33,9 @@ end = (w-1, h-1)
 
 path = {}
 dist = {}
-
 lb, ub = s, len(ps)
-
+i = s
 while True:
-    i = lb + (ub - lb) // 2
     if lb == ub:
         break
 
@@ -62,11 +68,25 @@ while True:
     if end not in dist:
         ub = i
     else:
-        lb = i + 1
+        path = set()
+        c = end
+        while c != start:
+            x, y = c
+            d = dist[c]
+            for dx, dy in ADJ_ORT:
+                xx, yy = x + dx, y + dy
+                if (xx,yy) in dist and dist[xx,yy] == d-1:
+                    c = (xx, yy)
+                    path.add(c)
+                    break
+        while ps[i] not in path:
+            i+=1
+        lb = i+1
+    i = lb + (ub - lb) // 2
 
 print(",".join(map(str, ps[i-1])))
 
 
-
+print(f"runtime:{time.time() - t}s")
 if __name__ == "__main__":
     pass

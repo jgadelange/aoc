@@ -19,7 +19,7 @@ points = [
     for line in f.readlines()
     if line.strip()
 ][:s]
-#
+
 # print(
 #     "\n".join(
 #         "".join("#" if (x,y) in points else "." for x in range(w))
@@ -33,11 +33,15 @@ dist = {
     (0, 0): 0,
 }
 
+def manh(point, point2):
+    return abs(point[0] - point2[0]) + abs(point[1] - point2[1])
+
+
 q = PriorityQueue()
-q.put((0, 0, 0))
+q.put(((manh(start, end), 0, 0, 0)))
 
 while not q.empty():
-    d, x, y = q.get()
+    _, d, x, y = q.get()
     # print(x,y)
     # if d < dist[(x, y)]:
     #     continue
@@ -51,7 +55,7 @@ while not q.empty():
         dd = dist.get((xx, yy), sys.maxsize)
         if d+1 < dd:
             dist[(xx, yy)] = d+1
-            q.put((d+1, xx, yy))
+            q.put((manh((xx,yy), end), d+1, xx, yy))
 
 
 print(dist[end])

@@ -1,3 +1,5 @@
+import time
+t = time.time()
 import sys
 from queue import PriorityQueue
 
@@ -72,7 +74,7 @@ while True:
     i += 1
 
 print(",".join(map(str, ps[i-1])))
-
+print(f"runtime:{time.time() - t}s")
 
 
 if __name__ == "__main__":
