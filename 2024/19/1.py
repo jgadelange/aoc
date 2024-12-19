@@ -2,10 +2,8 @@ f = open('./input', 'r')
 
 a, b = f.read().split('\n\n')
 
-available = a.split(", ")
-print(len(available))
+available = set(a.split(", "))
 lens = set(len(a) for a in available)
-print(lens)
 
 ans = 0
 for desired in b.split("\n"):
@@ -16,11 +14,9 @@ for desired in b.split("\n"):
     stack = [0]
     tried = {0}
     while stack:
-        print(stack)
         current = stack.pop()
         if current == len(desired):
             ans+=1
-            print(ans)
             break
         rest = desired[current:]
         for l in lens:

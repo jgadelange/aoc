@@ -4,7 +4,7 @@ f = open('./input', 'r')
 
 a, b = f.read().split('\n\n')
 
-available = a.split(", ")
+available = set(a.split(", "))
 lens = set(len(a) for a in available)
 
 ans = 0
