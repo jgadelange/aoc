@@ -40,7 +40,7 @@ mod tests {
     fn test_input_own() {
         let (part1_answer, part2_answer) = solve(include_str!("../../input/day02/input"));
         assert_eq!(part1_answer, 456);
-        assert_eq!(part2_answer, 218767230);
+        assert_eq!(part2_answer, 308);
     }
 
     #[test]
