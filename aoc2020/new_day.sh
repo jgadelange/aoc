@@ -18,8 +18,21 @@ DAY=$(pad_day_number "$NON_PADDED_DAY")
 
 # Create directories and files
 mkdir -p "input/day$DAY"
-touch "input/day$DAY/example"  # Example input file
-touch "input/day$DAY/input"    # Main input file
+
+# Download input file from Advent of Code site if it doesn't exist
+INPUT_FILE="input/day$DAY/input"
+if [ ! -f "$INPUT_FILE" ]; then
+  if [ -z "$AOC_SESSION" ]; then
+    echo "Error: AOC_SESSION environment variable is not set."
+    exit 1
+  fi
+
+  curl -s -b "session=$AOC_SESSION" "https://adventofcode.com/$YEAR/day/$NON_PADDED_DAY/input" -o "$INPUT_FILE"
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to download input file."
+    exit 1
+  fi
+fi
 
 # Template for Rust file
 RUST_TEMPLATE="// Advent of Code $YEAR - Day $DAY – https://adventofcode.com/$YEAR/day/$NON_PADDED_DAY/
@@ -58,8 +71,35 @@ mod tests {
 "
 
 # Create the Rust source file only if it doesn't already exist
-if [ ! -f "src/bin/day$DAY.rs" ]; then
-  echo "$RUST_TEMPLATE" > "src/bin/day$DAY.rs"
+RUST_FILE="src/bin/day$DAY.rs"
+if [ ! -f "$RUST_FILE" ]; then
+  mkdir -p "src/bin"
+  echo "$RUST_TEMPLATE" > "$RUST_FILE"
+fi
+
+# Open RustRover on the Rust source file
+open -a RustRover "$RUST_FILE"
+
+if [ ! -f "$EXAMPLE_FILE" ]; then
+  sleep 1
+fi
+# Open the browser on the problem statement
+open "https://adventofcode.com/$YEAR/day/$NON_PADDED_DAY"
+
+# Wait for user to copy the example input and write it to the example file
+EXAMPLE_FILE="input/day$DAY/example"
+if [ ! -f "$EXAMPLE_FILE" ]; then
+  INITIAL_CLIPBOARD_CONTENT=$(pbpaste)
+  echo "Please copy the example input from the webpage. Waiting for new clipboard content..."
+  while true; do
+    EXAMPLE_INPUT=$(pbpaste)
+    if [ "$EXAMPLE_INPUT" != "$INITIAL_CLIPBOARD_CONTENT" ] && [ -n "$EXAMPLE_INPUT" ]; then
+      echo "$EXAMPLE_INPUT" > "$EXAMPLE_FILE"
+      echo "Example input copied from clipboard to $EXAMPLE_FILE."
+      break
+    fi
+    sleep 1
+  done
 fi
 
 # Output success message
