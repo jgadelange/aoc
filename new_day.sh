@@ -10,7 +10,7 @@ pad_day_number() {
 
 # Get the current day of the month if no argument is provided
 if [ -z "$1" ]; then
-  NON_PADDED_DAY=$(date +%d)
+  NON_PADDED_DAY=$(date +%-d)
 else
   NON_PADDED_DAY="$1"
 fi
