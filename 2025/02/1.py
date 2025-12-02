@@ -23,9 +23,11 @@ for s in f.read().split(","):
         c = str(i)
 
         for l in range(1, len(c)//2+1):
-            chunks = list(batched(c, n=l))
+            if len(c) % l != 0: continue
 
-            if all(chunks[0] == chunk for chunk in chunks[1:]):
+            chunks = batched(c, n=l)
+            first = next(chunks)
+            if all(first == chunk for chunk in chunks):
                 found.add(i)
 
         if c[:len(c)//2] == c[len(c)//2:]:
